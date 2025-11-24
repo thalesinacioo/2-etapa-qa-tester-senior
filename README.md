@@ -1,4 +1,4 @@
-# 🏆 Avaliação Técnica QA Tester Sênior - BugBank
+# 🏆 Avaliação Técnica QA Tester Sênior
 
 Este repositório contém os artefatos, cenários e códigos desenvolvidos para a Avaliação Técnica de QA Tester Sênior, cobrindo Testes Funcionais, Automação (Cypress), Testes de API (Postman) e Fundamentos Teóricos/SQL.
 
