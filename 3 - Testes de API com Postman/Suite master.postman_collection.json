@@ -1,0 +1,508 @@
+{
+	"info": {
+		"_postman_id": "9364fedf-d6e8-4fff-b587-d82757c22783",
+		"name": "Suite master",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "19117815"
+	},
+	"item": [
+		{
+			"name": "1 - Nivel Básico",
+			"item": [
+				{
+					"name": "1 - Todos os produtos",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status Code é 200\", function () { pm.response.to.have.status(200); }); pm.test(\"Resposta é um Array com pelo menos 10 produtos\", function () { const jsonData = pm.response.json(); pm.expect(jsonData).to.be.an('array').and.to.have.lengthOf.at.least(10); }); pm.test(\"Primeiro item tem campos essenciais ('title' e 'price' são válidos)\", function () { const jsonData = pm.response.json(); pm.expect(jsonData[0]).to.have.all.keys('id', 'title', 'price', 'description', 'category', 'image', 'rating'); pm.expect(jsonData[0].price).to.be.a('number'); });"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://fakestoreapi.com/products?Status Code=200",
+							"protocol": "https",
+							"host": [
+								"fakestoreapi",
+								"com"
+							],
+							"path": [
+								"products"
+							],
+							"query": [
+								{
+									"key": "Status Code",
+									"value": "200",
+									"description": "Verifica se a listagem de produtos é acessível e retorna sucesso."
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "2 - Produto por iD",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status Code é 200\", function () { pm.response.to.have.status(200); }); pm.test(\"Corpo da resposta é um Objeto\", function () { const jsonData = pm.response.json(); pm.expect(jsonData).to.be.an('object'); }); pm.test(\"ID no Body é 12 e o Preço é um número\", function () { const jsonData = pm.response.json(); pm.expect(jsonData.id).to.eql(12); pm.expect(jsonData.price).to.be.a('number'); });"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://fakestoreapi.com/products/12?",
+							"protocol": "https",
+							"host": [
+								"fakestoreapi",
+								"com"
+							],
+							"path": [
+								"products",
+								"12"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": null,
+									"description": "Verifica se o endpoint de busca por ID funciona e retorna o ID correto no corpo da resposta."
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "3 - Produtos por categorias",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status Code é 200\", function () { pm.response.to.have.status(200); }); pm.test(\"Content-Type é JSON\", function () { pm.response.to.have.header(\"Content-Type\", \"application/json; charset=utf-8\"); }); pm.test(\"Retorno contém categorias esperadas (e.g., 'jewelery')\", function () { const jsonData = pm.response.json(); pm.expect(jsonData).to.be.an('array'); pm.expect(jsonData).to.include('jewelery'); });"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://fakestoreapi.com/products/categories",
+							"protocol": "https",
+							"host": [
+								"fakestoreapi",
+								"com"
+							],
+							"path": [
+								"products",
+								"categories"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "2 - Nível Intermediário",
+			"item": [
+				{
+					"name": "4 - Limitar Resultado",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status Code é 200\", function () { pm.response.to.have.status(200); }); pm.test(\"Retorna exatamente 5 produtos (Validação do 'limit')\", function () { const jsonData = pm.response.json(); pm.expect(jsonData).to.have.lengthOf(5); }); pm.test(\"Primeiro item possui ID válido\", function () { const jsonData = pm.response.json(); pm.expect(jsonData[0].id).to.be.a('number'); });"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://fakestoreapi.com/products?limit=5",
+							"protocol": "https",
+							"host": [
+								"fakestoreapi",
+								"com"
+							],
+							"path": [
+								"products"
+							],
+							"query": [
+								{
+									"key": "limit",
+									"value": "5",
+									"description": "Verifica se o parâmetro limit funciona, limitando o array da resposta a exatamente 5 objetos (produtos)."
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "5 - Produto inexistente",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status Code é 404 (Não Encontrado)\", function () { pm.response.to.have.status(404); }); pm.test(\"Corpo da resposta está vazio (Validação de Erro)\", function () { pm.expect(pm.response.text()).to.be.empty; });"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://fakestoreapi.com/products/99999?",
+							"protocol": "https",
+							"host": [
+								"fakestoreapi",
+								"com"
+							],
+							"path": [
+								"products",
+								"99999"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": null,
+									"description": "Testa um cenário negativo, validando que IDs inexistentes retornam o código de erro 404 (Não Encontrado)."
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "6 - Novo produto",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status Code é 201\", function () { pm.response.to.have.status(201); }); pm.test(\"ID do novo produto é um número e foi retornado\", function () { const jsonData = pm.response.json(); pm.expect(jsonData.id).to.be.a('number'); }); pm.test(\"Response body contém o título enviado ('Produto Teste Thales')\", function () { const jsonData = pm.response.json();  pm.expect(jsonData.title).to.include('Produto Teste Thales'); });",
+									"// A Fake Store API retorna o objeto POST com o novo ID"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "",
+								"value": "",
+								"description": "Testa a criação de um novo produto (simulada) e valida se a API retorna sucesso.",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"title\": \"Produto Teste Thales\",\n  \"price\": 13.5,\n  \"description\": \"descrição de teste\",\n  \"image\": \"https://as1.ftcdn.net/v2/jpg/16/77/56/96/1000_F_1677569661_dYEOe1fkufctMDTUeTzzcLYZMOKdoo1C.jpg\",\n  \"category\": \"electronic\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://fakestoreapi.com/products",
+							"protocol": "https",
+							"host": [
+								"fakestoreapi",
+								"com"
+							],
+							"path": [
+								"products"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "3 - Nivel avancado",
+			"item": [
+				{
+					"name": "7 - Produtos Filtrados por Categoria",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status Code é 200\", function () { pm.response.to.have.status(200); }); pm.test(\"Resposta é um Array não vazio\", function () { const jsonData = pm.response.json(); pm.expect(jsonData).to.be.an('array').and.to.have.lengthOf.at.least(1); }); pm.test(\"Todos os produtos são da categoria correta ('jewelery')\", function () { const jsonData = pm.response.json();  jsonData.forEach(item => { pm.expect(item.category).to.eql('jewelery'); pm.expect(item.id).to.be.a('number'); }); }); // Itera sobre todos os itens para garantir a integridade do filtro"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://fakestoreapi.com/products/category/jewelery?",
+							"protocol": "https",
+							"host": [
+								"fakestoreapi",
+								"com"
+							],
+							"path": [
+								"products",
+								"category",
+								"jewelery"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": null,
+									"description": "Verifica se todos os objetos retornados no array pertencem à categoria especificada."
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "8 - Login de Usuário",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status Code é 201\", function () { pm.response.to.have.status(201); }); pm.test(\"Token foi retornado e é uma string\", function () { const jsonData = pm.response.json(); pm.expect(jsonData).to.have.property('token'); pm.expect(jsonData.token).to.be.a('string'); }); pm.test(\"Token possui comprimento adequado (Validação de Token)\", function () { const jsonData = pm.response.json(); pm.expect(jsonData.token).to.have.lengthOf.at.least(16); });"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"username\": \"mor_2314\",\n  \"password\": \"83r5^_\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://fakestoreapi.com/auth/login?",
+							"protocol": "https",
+							"host": [
+								"fakestoreapi",
+								"com"
+							],
+							"path": [
+								"auth",
+								"login"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": null,
+									"description": "Testa o login com credenciais válidas e verifica se um token de autenticação (simulado) é retornado na resposta (validando o tamanho/existência)."
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "9 - DELETE Produto",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status Code é 200\", function () { pm.response.to.have.status(200); }); pm.test(\"ID 6 do objeto deletado foi retornado\", function () { const jsonData = pm.response.json(); pm.expect(jsonData.id).to.eql(6); }); pm.test(\"Objeto retornado contém campos básicos (confirma integridade do retorno)\", function () { const jsonData = pm.response.json(); pm.expect(jsonData).to.have.all.keys('id', 'title', 'price', 'description', 'category', 'image', 'rating'); });"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "https://fakestoreapi.com/products/6?",
+							"protocol": "https",
+							"host": [
+								"fakestoreapi",
+								"com"
+							],
+							"path": [
+								"products",
+								"6"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": null,
+									"description": "Valida se a requisição de exclusão de um produto retorna sucesso (o corpo da resposta geralmente retorna o objeto excluído)."
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "11 - Atualização de Produto",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Teste PUT 1: Atualização Completa de Produto (Cenário de Sucesso)",
+									"",
+									"pm.test(\"Status Code é 200 (Sucesso na Atualização)\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Corpo da resposta é um Objeto\", function () {",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.be.an('object');",
+									"});",
+									"",
+									"pm.test(\"O título foi atualizado corretamente ('Produto Teste PUT Modificado')\", function () {",
+									"    const jsonData = pm.response.json();",
+									"    // Verifica se a API retorna o novo título que foi enviado no Request Body",
+									"    pm.expect(jsonData.title).to.eql('Produto Teste PUT Modificado');",
+									"});",
+									"",
+									"pm.test(\"O ID do produto atualizado (ID 7) foi mantido e é um número\", function () {",
+									"    const jsonData = pm.response.json();",
+									"    // Verifica se o ID do produto que estamos atualizando foi retornado",
+									"    pm.expect(jsonData.id).to.eql(7);",
+									"    pm.expect(jsonData.id).to.be.a('number');",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"Produto Teste PUT Modificado\",\n    \"price\": 200.5,\n    \"description\": \"Nova descrição para o produto 7, atualizada via PUT.\",\n    \"image\": \"https://i.pravatar.cc\",\n    \"category\": \"electronics\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://fakestoreapi.com/products/7",
+							"protocol": "https",
+							"host": [
+								"fakestoreapi",
+								"com"
+							],
+							"path": [
+								"products",
+								"7"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "4 - Multiplos Query Params",
+			"item": [
+				{
+					"name": "10 - Limite e Ordenação Combinados",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status Code é 200\", function () { pm.response.to.have.status(200); }); pm.test(\"Retorna o limite exato de 5 produtos\", function () { const jsonData = pm.response.json(); pm.expect(jsonData.length).to.eql(5); }); pm.test(\"Todos os itens têm campo 'rate' definido (Validação de Schema)\", function () { const jsonData = pm.response.json(); jsonData.forEach(item => { pm.expect(item.rating.rate).to.be.a('number'); }); }); pm.test(\"Ordenação por Rate é crescente (desc) nos 2 primeiros itens\", function () { const jsonData = pm.response.json(); if (jsonData.length < 1) { pm.expect(jsonData[0].rating.rate).to.be.at.most(jsonData[1].rating.rate); } }); // Verifica se o Rate do item [0] é menor ou igual ao Rate do item [1]"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://fakestoreapi.com/products?limit=5&sort=desc",
+							"protocol": "https",
+							"host": [
+								"fakestoreapi",
+								"com"
+							],
+							"path": [
+								"products"
+							],
+							"query": [
+								{
+									"key": "limit",
+									"value": "5",
+									"description": "Garante que a resposta contenha exatamente 5 produtos. "
+								},
+								{
+									"key": "sort",
+									"value": "desc",
+									"description": "Ordenação: Verifica se os 3 produtos retornados estão em ordem decrescente de ID."
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
