@@ -41,7 +41,7 @@ Nesta etapa, foram realizados testes exploratórios nos fluxos de Criação de C
 O projeto de automação foi configurado com Cypress e focado na estabilidade, usando correções avançadas (`cy.wait()` e `{force: true}`) para lidar com as transições 3D complexas da UI do BugBank.
 
 ### ⚙️ Execução e Localização dos Testes:
-1. Navegue até a pasta: `02_automacao_cypress/`
+1. Navegue até a pasta: `02_automacao_cypress/cypress/E2E`
 2. Instale as dependências: `npm install`
 3. Execute o Cypress: `npx cypress open`
 
