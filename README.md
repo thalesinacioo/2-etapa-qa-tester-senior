@@ -49,7 +49,8 @@ O projeto de automação foi configurado com Cypress e focado na estabilidade, u
 
 | Arquivo | Cenário | Abordagem |
 | :--- | :--- | :--- |
-| `cadastro_e_login_sucesso.cy.js` | Cadastro e Login (Fluxo Contínuo) | Testa o fluxo E2E, resolvendo problemas de sincronização e ambiguidade. |
+| `cadastro.cy.js` | Cadastro | Testa o fluxo de cadastro |
+| `login_sucesso.cy.js` | Login | Testa o fluxo E2E, de login, até chegar na tela da conta do usuário |
 | `login_invalido.cy.js` | Tentativa de Login (Credenciais Inválidas) | Testa o cenário negativo e a exibição da mensagem de erro. |
 
 ---
