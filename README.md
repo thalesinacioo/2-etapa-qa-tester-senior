@@ -27,6 +27,8 @@ Nesta etapa, foram realizados testes exploratórios nos fluxos de Criação de C
 | :--- | :--- | :--- |
 | 001 - Criação de conta com sucesso | ✅ PASS | Conta criada com sucesso. |
 | **002 - E-mail já registrado** | ❌ **FAIL (Bug)** | O sistema permitiu a criação de contas duplicadas com o mesmo e-mail. |
+| 003 - Login com e-mail e senha válidos | ✅ PASS | O sistema permitiu o Login |
+| 004 - Tentativa de login com senha inválida/incorreta| ✅ PASS | O sistema barrou o login com credenciais invalidas |
 | 005 - Transferência com saldo | ✅ PASS | Transferência realizada com sucesso. |
 | 006 - Transferência saldo insuficiente | ✅ PASS | Sistema bloqueou corretamente a transação. |
 
